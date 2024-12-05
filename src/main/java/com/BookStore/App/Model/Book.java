@@ -1,11 +1,21 @@
 package com.BookStore.App.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+
 public class Book {
     private int id;
     private String title;
     private String author;
     private String publisher;
-    private boolean isDeleted;
+    private boolean deleted = false;
+
+    private Date createdDate;
+    private Date updatedDate;
+    private String createdBy;
+    private String updatedBy;
+
 
     public Book(int id, String title, String author, String publisher) {
         this.id = id;
@@ -46,22 +56,54 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
+    public boolean getDeleted() {
+        return deleted;
     }
 
     public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
+    }
+
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "Book {" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
-//                ", isDeleted=" + isDeleted +
                 '}';
     }
 }
