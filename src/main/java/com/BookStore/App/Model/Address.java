@@ -2,130 +2,65 @@ package com.BookStore.App.Model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Table(name = "address")
 public class Address {
-	
-	@Id	
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    
+    @Id    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "line1")
     private String line1;
+
+    @Column(name = "line2")
     private String line2;
+
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "pincode")
     private String pincode;
+
+    @Column(name = "mobile_no")
     private String mobileNo;
-    
+
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Column(name = "created_by")
     private String createdBy;
+
+    @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
+    @Column(name = "updated_by")
     private String updatedBy;
-    
-   
-    
-    
-    public Address(int id, String line1, String line2, String city, String pincode, String mobileNo,
-			LocalDateTime createdDate, String createdBy, LocalDateTime updatedDate, String updatedBy) {
-		
-		this.id = id;
-		this.line1 = line1;
-		this.line2 = line2;
-		this.city = city;
-		this.pincode = pincode;
-		this.mobileNo = mobileNo;
-		this.createdDate = createdDate;
-		this.createdBy = createdBy;
-		this.updatedDate = updatedDate;
-		this.updatedBy = updatedBy;
-	}
 
-	public Address() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
+    public Address(String line1, String line2, String city, String pincode, String mobileNo) {
+        this.line1 = line1;
+        this.line2 = line2;
         this.city = city;
-    }
-
-
-    public String getPincode() {
-        return pincode;
-    }
-
-    public void setPincode(String pincode) {
         this.pincode = pincode;
+        this.mobileNo = mobileNo;
     }
 
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public LocalDateTime getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(LocalDateTime updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public String getLine1() {
-		return line1;
-	}
-
-	public void setLine1(String line1) {
-		this.line1 = line1;
-	}
-
-	public String getLine2() {
-		return line2;
-	}
-
-	public void setLine2(String line2) {
-		this.line2 = line2;
-	}
-
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-	
-    
-    
+    public String getAddressString() {
+        return "line1=" + line1 + ", line2=" + line2 + ", city=" + city + ", pincode=" + pincode
+                + ", mobileNo=" + mobileNo;
+    }
 }

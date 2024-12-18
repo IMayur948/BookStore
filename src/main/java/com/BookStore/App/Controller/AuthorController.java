@@ -2,15 +2,19 @@ package com.BookStore.App.Controller;
 
 import com.BookStore.App.Controller.POJO.AuthorRequest;
 import com.BookStore.App.Controller.POJO.AuthorResponse;
+import com.BookStore.App.Controller.POJO.GetAuthorResponse;
 import com.BookStore.App.Model.Author;
 import com.BookStore.App.Service.AuthorService;
+import com.BookStore.App.Service.Exception.AddressNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/bookStore/api/author")
@@ -19,67 +23,57 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-    // Convert AuthorRequest to Author
-    private Author convertToAuthor(AuthorRequest authorRequest) {
-        Author author = new Author();
-        author.setFirstName(authorRequest.getFirstName());
-        author.setLastName(authorRequest.getLastName());
-        author.setAddress(authorRequest.getAddress());
-        return author;
-    }
-
-    // Convert Author to AuthorResponse
-    private AuthorResponse convertToAuthorResponse(Author author) {
-        return new AuthorResponse(
-            author.getId(),
-            author.getFirstName(),
-            author.getLastName(),
-            author.getAddress()
-        );
-    }
-
-    // Convert List<Author> to List<AuthorResponse>
-    private List<AuthorResponse> convertToAuthorResponseList(List<Author> authors) {
-        List<AuthorResponse> authorResponses = new ArrayList<>();
-        for (Author author : authors) {
-            authorResponses.add(convertToAuthorResponse(author));
-        }
-        return authorResponses;
-    }
-
     // Get all authors
-    @GetMapping("/getAll")
-    public ResponseEntity<List<AuthorResponse>> getAllAuthors() {
+    @GetMapping
+    public ResponseEntity<GetAuthorResponse> getAllAuthors() {
         List<Author> authors = authorService.getAllAuthors();
-        List<AuthorResponse> authorResponses = convertToAuthorResponseList(authors);
-        return new ResponseEntity<>(authorResponses, HttpStatus.OK);
+        List<AuthorResponse> authorResponseList = authors.stream()
+                .map(author -> new AuthorResponse(author.getId(), author.getFirstName(),author.getLastName(), author.getAddress().getAddressString()))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(new GetAuthorResponse(authorResponseList), HttpStatus.OK);
     }
 
+    
     // Get author by ID
     @GetMapping("/{id}")
-    public ResponseEntity<AuthorResponse> getAuthor(@PathVariable int id) {
+    public ResponseEntity<GetAuthorResponse> getAuthor(@PathVariable int id) {
+    	
         Author author = authorService.getAuthorById(id);
+        
         if (author != null) {
-            AuthorResponse authorResponse = convertToAuthorResponse(author);
-            return new ResponseEntity<>(authorResponse, HttpStatus.OK);
+            AuthorResponse authorResponse = new AuthorResponse(author.getId(),author.getFirstName(),author.getLastName(),author.getAddress().getAddressString());
+            List<AuthorResponse> authorResponseList = Collections.singletonList(authorResponse);
+            return new ResponseEntity<>(new GetAuthorResponse(authorResponseList), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // Add a new author
-    @PostMapping("/add")
-    public ResponseEntity<String> addAuthor(@RequestBody AuthorRequest authorRequest) {
-        Author author = convertToAuthor(authorRequest);
-        authorService.addAuthor(author);
-        return new ResponseEntity<>("Author added successfully", HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<GetAuthorResponse> addAuthor(@RequestBody AuthorRequest authorRequest) throws AddressNotFoundException {
+    	
+        Author author = new Author(authorRequest.getFirstName(),authorRequest.getLastName(),null);
+        
+        Author newAuthor = authorService.addAuthor(author,authorRequest.getAddressId());
+
+        AuthorResponse authorResponse = new AuthorResponse(newAuthor.getId(),newAuthor.getFirstName(),newAuthor.getLastName(),newAuthor.getAddress().getAddressString());
+        List<AuthorResponse> authorResponseList = Collections.singletonList(authorResponse);
+        return new ResponseEntity<>(new GetAuthorResponse(authorResponseList), HttpStatus.CREATED);
     }
 
     // Update author
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateAuthor(@PathVariable int id, @RequestBody AuthorRequest authorRequest) {
-        Author author = convertToAuthor(authorRequest);
-        authorService.updateAuthor(id, author);
-        return new ResponseEntity<>("Author updated successfully", HttpStatus.OK);
+    public ResponseEntity<GetAuthorResponse> updateAuthor(@PathVariable int id, @RequestBody AuthorRequest authorRequest) {
+        
+    	Author author = new Author(authorRequest.getFirstName(),authorRequest.getLastName(),null);
+        
+    	Author newAuthor = authorService.updateAuthor(id, author);
+
+        AuthorResponse authorResponse = new AuthorResponse(newAuthor.getId(),newAuthor.getFirstName(),newAuthor.getLastName(),newAuthor.getAddress().getAddressString());
+       
+        List<AuthorResponse> authorResponseList = Collections.singletonList(authorResponse);
+        return new ResponseEntity<>(new GetAuthorResponse(authorResponseList), HttpStatus.OK);
     }
 
     // Delete author

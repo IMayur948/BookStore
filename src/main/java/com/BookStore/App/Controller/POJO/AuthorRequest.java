@@ -23,49 +23,6 @@ public class AuthorRequest {
     private String lastName;
 	
 	@NotNull 
-	private int address; 
-
-    public AuthorRequest() {}
-
-    public AuthorRequest(String firstName, String lastName, int address) {
-    	this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-    }
-
-    // Getters and Setters
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getAddress() {
-        return address;
-    }
-
-    public void setAddress(int address) {
-        this.address= address;
-    }
-    
-
+	private int addressId; 
  
-	@Override
-    public String toString() {
-        return "AuthorBean{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", addressId=" + address+
-                '}';
-    }
 }

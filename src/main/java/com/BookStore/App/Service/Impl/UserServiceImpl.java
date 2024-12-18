@@ -14,8 +14,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
 
-    public void register(User user) {
-    	userRepository.save(user);
+    public User register(User user) {
+    	return userRepository.save(user);
     }
 
     public boolean login(String email, String password) {
@@ -25,16 +25,29 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-//
-//    public User updateUser(User user) {
-//        return userRepository.update(user);
-//    }
-//    public void deleteUser(String username) {
-//        userRepository.delete(username);
-//    }
+    
 
-    public List<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users;
+    public List<User> getUsers() {
+    	return userRepository.findAll();
+	}
+
+	public User updateUser(User user) {
+    	User existingUser = userRepository.findByEmail(user.getEmail());
+    
+    	if(existingUser != null) {
+//    		existingUser.setFirstName(user.getFirstName());
+//    		existingUser.setLastName(user.getLastName());
+    		existingUser.setPassword(user.getPassword());
+    		return userRepository.save(existingUser);    		
+    	}
+    	else 
+    		return null;
     }
+
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
+    }
+
+	 
+
 }

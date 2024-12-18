@@ -1,5 +1,6 @@
 package com.BookStore.App.Service.Impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,17 +38,20 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public Address updateAddress(int id, Address address) {
-		
 		Address newAddress= addressRepository.findById(id).orElse(null);
-		
-		newAddress.setCity(address.getCity());
-		newAddress.setLine1(address.getLine1());
-		newAddress.setLine2(address.getLine2());
-		newAddress.setCity(address.getCity());
-		newAddress.setPincode(address.getPincode());
-		newAddress.setMobileNo(address.getMobileNo());
-		
-		return addressRepository.save(newAddress);
+		if(newAddress != null) {
+			newAddress.setCity(address.getCity());
+			newAddress.setLine1(address.getLine1());
+			newAddress.setLine2(address.getLine2());
+			newAddress.setCity(address.getCity());
+			newAddress.setPincode(address.getPincode());
+			newAddress.setMobileNo(address.getMobileNo());
+			newAddress.setUpdatedDate(LocalDateTime.now());
+			
+			return addressRepository.save(newAddress);			
+		}
+		else 
+			return null;
 	}
 
 	@Override
