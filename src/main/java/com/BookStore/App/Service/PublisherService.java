@@ -15,5 +15,5 @@ public interface PublisherService {
 
     Publisher updatePublisher(int id, Publisher publisher);
 
-    void deletePublisher(int id);
+    boolean deletePublisher(int id);
 }

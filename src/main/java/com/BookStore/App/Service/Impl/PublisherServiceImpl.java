@@ -58,8 +58,13 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
-    public void deletePublisher(int id) {
-    	publisherRepository.deleteById(id);
+    public boolean deletePublisher(int id) {
+    	if(publisherRepository.existsById(id)) {    		
+    		publisherRepository.deleteById(id);
+    		return true;
+    	}
+    	else
+    		return false;
     	
     }
 }
