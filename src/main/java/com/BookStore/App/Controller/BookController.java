@@ -98,17 +98,17 @@ public class BookController {
     
     
 //     Get books by author or publisher
-//    @GetMapping(params = {"author", "publisher"})
-//    public ResponseEntity<GetBookResponse> getBooksByAuthorOrPublisher(@RequestParam(required = false) int author, @RequestParam(required = false) int publisher) {
-//    	List<Book> books = bookService.getByAuthorOrPublisher(author, publisher);
-//    	List<BookResponse> bookResponseList = books.stream()
-//    			.map(book -> new BookResponse(book.getId(), book.getTitle(), book.getAuthor(), book.getPublisher()))
-//    			.collect(Collectors.toList());
-//    	return new ResponseEntity<>(new GetBookResponse(bookResponseList), HttpStatus.OK);
-//    }
-//
-//    
-//    
+    @GetMapping(params = {"author", "publisher"})
+    public ResponseEntity<GetBookResponse> getBooksByAuthorOrPublisher(@RequestParam(required = false) int author, @RequestParam(required = false) int publisher) throws AuthorNotFoundException, PublisherNotFoundException {
+    	List<Book> books = bookService.getByAuthorOrPublisher(author, publisher);
+    	List<BookResponse> bookResponseList = books.stream()
+    			.map(book -> new BookResponse(book.getId(), book.getTitle(), book.getAuthor().getName(), book.getPublisher().getName()))
+    			.collect(Collectors.toList());
+    	return new ResponseEntity<>(new GetBookResponse(bookResponseList), HttpStatus.OK);
+    }
+
+    
+    
 //    // Get books by author
 //    @GetMapping(params = {"author"})
 //    public ResponseEntity<GetBookResponse> getBooksByAuthor(@RequestParam int author) {

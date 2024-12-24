@@ -24,7 +24,7 @@ public interface BookService {
 //
 //    List<Book> getByPublisher(int publisher);
 //
-//    List<Book> getByAuthorOrPublisher(int author, int publisher);
+    List<Book> getByAuthorOrPublisher(int author, int publisher) throws AuthorNotFoundException, PublisherNotFoundException;
 
  
     

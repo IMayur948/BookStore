@@ -1,6 +1,5 @@
 package com.BookStore.App.Service.Impl;
-
-import com.BookStore.App.Model.Address;
+ 
 import com.BookStore.App.Model.Author;
 import com.BookStore.App.Model.Book;
 import com.BookStore.App.Model.BookStock;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -125,10 +125,42 @@ public class BookServiceImpl implements BookService {
 			existingBook.setUpdatedDate(LocalDateTime.now());
     		return bookRepository.save(existingBook);
     	}
-    	else 
-    		return null;
+    	return null;
     	
     }
+
+    public List<Book> getByAuthorOrPublisher(int authorId, int publisherId) throws AuthorNotFoundException , PublisherNotFoundException{
+    	List<Book> bookList = bookRepository.findAll();
+    	
+    	Optional<Author> authorOptional = authorRepository.findById(authorId);
+     	
+    	if(authorOptional.isEmpty()) {
+    		throw new AuthorNotFoundException();
+    	}
+    	Author author = authorOptional.get();
+    	
+    	Optional<Publisher> publisherOptional = publisherRepository.findById(publisherId);
+     	
+    	if(publisherOptional.isEmpty()) {
+    		throw new PublisherNotFoundException();
+    	}
+    	Publisher publisher = publisherOptional.get();
+    	
+//    	List<Book> newBookList = new ArrayList<>();
+//    	for(Book book : bookList) {
+//    		if(book.getAuthor().equals(author) && book.getPublisher().equals(publisher)) {
+//    			newBookList.add(book);
+//    		}
+//    	}
+//    	
+    	List<Book> newBookList1 =  bookList.stream()
+    			.filter(book -> book.getAuthor().equals(author) && book.getPublisher().equals(publisher))
+    			.collect(Collectors.toList());
+    	
+    	return newBookList1;
+    }
+    
+    
 
 //    public List<Book> getByAuthor(int author) {
 //        return bookRepository.findByAuthor(author);
@@ -139,9 +171,5 @@ public class BookServiceImpl implements BookService {
 //    	return bookRepository.findByPublisher(publisher);
 //    }
 //
-//    public List<Book> getByAuthorOrPublisher(int author, int publisher) {
-//        return bookRepository.findByAuthorOrPublisher(author, publisher);
-//    }
-
     
 }
