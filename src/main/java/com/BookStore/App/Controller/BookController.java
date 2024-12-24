@@ -109,25 +109,25 @@ public class BookController {
 
     
     
-//    // Get books by author
-//    @GetMapping(params = {"author"})
-//    public ResponseEntity<GetBookResponse> getBooksByAuthor(@RequestParam int author) {
-//        List<Book> books = bookService.getByAuthor(author);
-//        List<BookResponse> bookResponseList = books.stream()
-//        		.map(book -> new BookResponse(book.getId(), book.getTitle(), book.getAuthor(), book.getPublisher()))
-//        		.collect(Collectors.toList());
-//        return new ResponseEntity<>(new GetBookResponse(bookResponseList), HttpStatus.OK);
-//    }
-//
-//    
-//    // Get books by publisher
-//    @GetMapping(params = {"publisher"})
-//    public ResponseEntity<GetBookResponse> getBooksByPublisher(@RequestParam int publisher) {
-//        List<Book> books = bookService.getByPublisher(publisher);
-//        List<BookResponse> bookResponseList = books.stream()
-//        		.map(book -> new BookResponse(book.getId(), book.getTitle(), book.getAuthor(), book.getPublisher()))
-//        		.collect(Collectors.toList());
-//        return new ResponseEntity<>(new GetBookResponse(bookResponseList), HttpStatus.OK); 
-//    }
+    // Get books by author
+    @GetMapping(params = {"author"})
+    public ResponseEntity<GetBookResponse> getBooksByAuthor(@RequestParam int author) {
+        List<Book> books = bookService.getByAuthor(author);
+        List<BookResponse> bookResponseList = books.stream()
+        		.map(book -> new BookResponse(book.getId(), book.getTitle(), book.getAuthor().getName(), book.getPublisher().getName()))
+        		.collect(Collectors.toList());
+        return new ResponseEntity<>(new GetBookResponse(bookResponseList), HttpStatus.OK);
+    }
+
+    
+    // Get books by publisher
+    @GetMapping(params = {"publisher"})
+    public ResponseEntity<GetBookResponse> getBooksByPublisher(@RequestParam int publisher) {
+        List<Book> books = bookService.getByPublisher(publisher);
+        List<BookResponse> bookResponseList = books.stream()
+        		.map(book -> new BookResponse(book.getId(), book.getTitle(), book.getAuthor().getName(), book.getPublisher().getName()))
+        		.collect(Collectors.toList());
+        return new ResponseEntity<>(new GetBookResponse(bookResponseList), HttpStatus.OK); 
+    }
 
 }

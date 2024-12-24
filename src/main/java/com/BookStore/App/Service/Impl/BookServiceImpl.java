@@ -88,14 +88,17 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
+    
     public Book getById(int id) {
         return bookRepository.findById(id).orElse(null);
     }
 
+    
     public Book getByTitle(String title) {
         return bookRepository.findByTitle(title).orElse(null);
     }
 
+    
     public Book update(int id, String title, int authorId, int publisherId)  throws AuthorNotFoundException, PublisherNotFoundException, BookNotFoundException {
     	
     	Optional<Book> bookOptional = bookRepository.findById(id);
@@ -162,14 +165,14 @@ public class BookServiceImpl implements BookService {
     
     
 
-//    public List<Book> getByAuthor(int author) {
-//        return bookRepository.findByAuthor(author);
-//    }
-//    
-//
-//    public List<Book> getByPublisher(int publisher) {
-//    	return bookRepository.findByPublisher(publisher);
-//    }
-//
+    public List<Book> getByAuthor(int author) {
+        return bookRepository.findByAuthorId(author);
+    }
+    
+
+    public List<Book> getByPublisher(int publisher) {
+    	return bookRepository.findByPublisherId(publisher);
+    }
+
     
 }
